@@ -292,3 +292,32 @@ plt.show()
 
 
 
+#CandleStick Chart
+import matplotlib.dates as mdates
+from mpl_finance import candlestick_ohlc
+
+# Generate sample data for visualization; this would be replaced by your actual data
+sample_data = data_df.tail(10).copy()
+sample_data['Date'] = mdates.date2num(sample_data.index.to_pydatetime())
+
+# Prepare data in the format: Date, Open, High, Low, Close
+plot_data = sample_data[['Date', 'Open', 'High', 'Low', 'Close']].values
+
+# Create the figure and axis objects
+fig, ax = plt.subplots(figsize=(12, 6))
+
+# Configure x-axis
+ax.xaxis_date()
+ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
+plt.xticks(rotation=45)
+
+# Configure grid and labels
+ax.grid(True)
+plt.xlabel('Date')
+plt.ylabel('Price')
+plt.title('Candlestick Chart of Daily Closing Prices')
+
+# Create the candlestick chart
+candlestick_ohlc(ax, plot_data, width=0.6, colorup='g', colordown='r')
+
+plt.show()
