@@ -254,6 +254,41 @@ forecast_data.update({
 })
 
 
+import matplotlib.pyplot as plt
+
+# Sample forecast data for visualization; To be replaced with actual forecast data
+sample_forecast_data = {
+    'Zero Decline Dates': [],
+    'Decline Average': 2.5,
+    'Rally Average': 3.1,
+    'Volume Average': 1500,
+    'Range Average': 5.2,
+    'BH Average': 1.2,
+    'BU Average': 1.3,
+    'Latest Trend MoMo Direction': 'Sideways',
+    'Today Open': 4000,
+    'Today High': 4025,
+    'Today Low': 3980,
+    'Today Close': 4010,
+    'Yesterday Open': 3980,
+    'Yesterday High': 4015,
+    'Yesterday Low': 3975,
+    'Yesterday Close': 4000
+}
+
+# Visualizing some of the key Forecast metrics
+labels = list(sample_forecast_data.keys())
+values = list(sample_forecast_data.values())
+
+# Selecting only the numeric values for bar chart
+numeric_labels = [label for label, value in zip(labels, values) if isinstance(value, (int, float))]
+numeric_values = [value for value in values if isinstance(value, (int, float))]
+
+plt.figure(figsize=(15, 6))
+plt.barh(numeric_labels, numeric_values, color='skyblue')
+plt.xlabel('Values')
+plt.title('Forecast Key Metrics')
+plt.show()
 
 
 
