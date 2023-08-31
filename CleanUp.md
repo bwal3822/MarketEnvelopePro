@@ -2,7 +2,7 @@
 
 Follow these instructions to clean up this file.
 
-## Your Rold
+## Your Role
 
 You're an expert developer who has been hired to clean up this code.
 
