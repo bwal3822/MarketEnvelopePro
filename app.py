@@ -2,7 +2,7 @@
 import numpy as np
 import pandas as pd
 # Load the "Data" sheet into a DataFrame
-data_df = pd.read_excel('/mnt/data/MES2022Algo.xlsx', sheet_name='Data').iloc[2:] \
+data_df = pd.read_excel('/mnt/data/mesPriceHistory.xlsx', sheet_name='Data').iloc[2:] \
     .reset_index(drop=True)
 
 # Drop NaN columns and rows
