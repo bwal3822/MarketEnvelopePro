@@ -1,12 +1,34 @@
-import pandas as pd
-import numpy as np
 
-# -----------------------
-# Load and basic features
-# -----------------------
-df = pd.read_csv("prices.xlsx", parse_dates=["Date"]).sort_values("Date").reset_index(drop=True)
-for col in ["Open","High","Low","Close"]:
-    df[col] = pd.to_numeric(df[col], errors="coerce")
+import numpy as np
+import pandas as pd
+from pathlib import Path
+
+def load_prices(path="prices.xlsx", sheet="price_sheet"):
+    p = Path(path).expanduser().resolve()
+    print("Loading:", p)
+    ext = p.suffix.lower()
+
+    if ext == ".csv":
+        # Try a couple of common Windows encodings if UTF-8 fails
+        for enc in (None, "utf-8-sig", "cp1252", "latin1"):
+            try:
+                kwargs = {"parse_dates": ["Date"]}
+                if enc is not None:
+                    kwargs["encoding"] = enc
+                return pd.read_csv(p, **kwargs)
+            except UnicodeDecodeError:
+                print(f"Retry CSV with encoding={enc}")
+        raise
+    elif ext in (".xlsx", ".xls"):
+        # Requires openpyxl for .xlsx
+        return pd.read_excel(p, sheet_name=sheet, engine="openpyxl")
+    else:
+        raise ValueError(f"Unsupported file type: {ext}")
+
+df = load_prices("prices.xlsx", sheet="price_sheet").sort_values("Date").reset_index(drop=True)
+print("Rows:", len(df))
+print(df.head(3))
+
 
 df["TR"] = np.maximum(df["High"]-df["Low"], np.maximum(abs(df["High"]-df["Close"].shift(1)), abs(df["Low"]-df["Close"].shift(1))))
 df["ATR"] = df["TR"].rolling(14, min_periods=1).mean()
